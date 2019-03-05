@@ -6,7 +6,11 @@
 #include <DallasTemperature.h>
 #include <DHT.h>
 
+#include <TinyGPS++.h>
+#include <SoftwareSerial.h>
+
 #include <ArduinoJson.h>
+const size_t capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(8) + 260;
 
 #define RED_LED D5
 #define GREEN_LED D6
@@ -18,7 +22,7 @@
 #define MQTT_USR "barca1"
 #define MQTT_PSW "barca1"
 #define MQTT_ADDR "192.168.4.100"
-#define MQTT_DATA_TOPIC "barche/records"
+#define MQTT_DATA_TOPIC "records"
 #define MQTT_CONFIG_TOPIC "barca1/config"
 
 WiFiClient espClient;
@@ -42,6 +46,9 @@ float waterTemp, airTemp, airHumidity;
 
 int sampleRate = 1;
 
+TinyGPSPlus gpsParser;
+SoftwareSerial gps(D8, D7);
+
 void setup() {
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
@@ -61,9 +68,14 @@ void setup() {
 
   //prepare the sensors
   setupSensors();
+  
+  gps.begin(9600);
 }
 
 void loop() {
+  //update the gps when possible
+  updateGps();
+  
   //check wifi connection
   if(WiFi.status() != WL_CONNECTED) {
     Serial.println("Wifi connection lost");
@@ -176,33 +188,65 @@ void recordSensorsData() {
 }
 
 void sendSensorsData() {
-  const size_t capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(5);
   DynamicJsonDocument doc(capacity);
   
   JsonObject record = doc.createNestedObject("record");
   record["idBarchetta"] = ID_BARCHETTA;
+  record["latitude"] = String(gpsParser.location.lat(), 6);
+  record["longitude"] = String(gpsParser.location.lng(), 6);
+  record["satelliti"] = gpsParser.satellites.value();
+  record["altitude"] = gpsParser.altitude.meters();
+  record["velocita"] = gpsParser.speed.mps();
+  record["hdop"] = (float) gpsParser.hdop.value()/100;
+  String dateTime = "";
+  dateTime += gpsParser.date.year();
+  dateTime += "-";
+  dateTime += gpsParser.date.month();
+  dateTime += "-";
+  dateTime += gpsParser.date.day();
+  dateTime += " ";
+  dateTime += gpsParser.time.hour();
+  dateTime += ":";
+  dateTime += gpsParser.time.minute();
+  dateTime += ":";
+  dateTime += gpsParser.time.second(); //2019-02-28 10:10:00
+  record["dateTime"] = dateTime;
   
   JsonArray datiSensori = doc.createNestedArray("datiSensori");
+
+  if(!isnan(waterTemp)) {
+    JsonObject datiSensori_0 = datiSensori.createNestedObject();
+    datiSensori_0["valore"].set((float) waterTemp);
+    datiSensori_0["idSensore"] = ID_PROBE;
+  }
   
-  JsonObject datiSensori_0 = datiSensori.createNestedObject();
-  datiSensori_0["valore"].set((float) waterTemp);
-  datiSensori_0["idSensore"] = ID_PROBE;
+  if(!isnan(airTemp)) {
+    JsonObject datiSensori_1 = datiSensori.createNestedObject();
+    datiSensori_1["valore"].set((float) airTemp);
+    datiSensori_1["idSensore"] = ID_DHT11_TEMP;
+  }
   
-  JsonObject datiSensori_1 = datiSensori.createNestedObject();
-  datiSensori_1["valore"].set((float) airTemp);
-  datiSensori_1["idSensore"] = ID_DHT11_TEMP;
-  
-  JsonObject datiSensori_2 = datiSensori.createNestedObject();
-  datiSensori_2["valore"].set((float) airHumidity);
-  datiSensori_2["idSensore"] = ID_DHT11_HUM;
+  if(!isnan(airHumidity)) {
+    JsonObject datiSensori_2 = datiSensori.createNestedObject();
+    datiSensori_2["valore"].set((float) airHumidity);
+    datiSensori_2["idSensore"] = ID_DHT11_HUM;
+  }
 
   String message = "";
   serializeJson(doc, message);
   //Serial.println(message);
   Serial.println("data sent");
-  char payload[message.length()];
-  message.toCharArray(payload, message.length());
+  char payload[message.length() + 1];
+  message.toCharArray(payload, message.length() + 1);
   
   //send the actual message
   Serial.println(mqtt.publish(MQTT_DATA_TOPIC, payload));
+}
+
+void updateGps() {
+  if(gps.available() > 0) {
+    while(gps.available() > 0) {
+      gpsParser.encode(gps.read());
+    }
+  }
 }
