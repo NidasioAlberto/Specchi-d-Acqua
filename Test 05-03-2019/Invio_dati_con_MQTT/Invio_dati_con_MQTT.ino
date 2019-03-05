@@ -1,22 +1,46 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+//if the you can't send a packet more than 128 bytes change MQTT_MAX_PACKET_SIZE in the .h library
 
-#define RED_LED 14
-#define GREEN_LED 12
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <DHT.h>
+
+#include <ArduinoJson.h>
+
+#define RED_LED D5
+#define GREEN_LED D6
 
 #define WIFI_SSID "Team specchi"
 #define WIFI_PSW "Fornaroli"
 
+#define ID_BARCHETTA 1
 #define MQTT_USR "barca1"
 #define MQTT_PSW "barca1"
 #define MQTT_ADDR "192.168.4.100"
-#define MQTT_DATA_TOPIC "barca1/data"
+#define MQTT_DATA_TOPIC "barche/records"
 #define MQTT_CONFIG_TOPIC "barca1/config"
 
 WiFiClient espClient;
 PubSubClient mqtt(espClient);
 
 long lastTime;
+
+#define ID_PROBE 1
+#define ID_DHT11_TEMP 2
+#define ID_DHT11_HUM 3
+
+#define ONE_WIRE_BUS D3
+#define DHT_PIN D1
+
+OneWire oneWire(ONE_WIRE_BUS);
+
+DallasTemperature sensors(&oneWire);
+DHT dht(DHT_PIN, DHT11);
+
+float waterTemp, airTemp, airHumidity;
+
+int sampleRate = 1;
 
 void setup() {
   pinMode(RED_LED, OUTPUT);
@@ -34,6 +58,9 @@ void setup() {
 
   //turn on the green led
   digitalWrite(GREEN_LED, HIGH);
+
+  //prepare the sensors
+  setupSensors();
 }
 
 void loop() {
@@ -66,9 +93,12 @@ void loop() {
     digitalWrite(GREEN_LED, HIGH);
   }
 
-  //send some data
-  if(millis() - lastTime > 1000) {
-    mqtt.publish(MQTT_DATA_TOPIC, "hello world");
+  //every n sencods
+  if(millis() - lastTime > sampleRate * 1000) {
+    //record and send sensors data
+    recordSensorsData();
+    sendSensorsData();
+    
     lastTime = millis();
   }
 
@@ -82,7 +112,7 @@ void connectToWifi() {
 
   //wait until the wifi is connected
   while (WiFi.status() != WL_CONNECTED) {
-    //blink the red led while co nnecting
+    //blink the red led while connecting
     digitalWrite(RED_LED, HIGH);
     delay(250);
     digitalWrite(RED_LED, LOW);
@@ -127,4 +157,52 @@ void handleMqttMessage(char* topic, byte* payload, unsigned int length) {
   Serial.print("):");
   for(int i = 0; i < length; i++) Serial.write((char) payload[i]);
   Serial.println("");
+}
+
+void setupSensors() {
+  sensors.begin();
+  dht.begin();
+}
+
+void recordSensorsData() {
+  sensors.requestTemperatures();
+  waterTemp = sensors.getTempCByIndex(0);
+  airTemp = dht.readTemperature();
+  airHumidity = dht.readHumidity();
+
+  Serial.print("Water tmp: "); Serial.print(waterTemp);
+  Serial.print(" air tmp: "); Serial.print(airTemp);
+  Serial.print(" air hum: "); Serial.println(airHumidity);
+}
+
+void sendSensorsData() {
+  const size_t capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(5);
+  DynamicJsonDocument doc(capacity);
+  
+  JsonObject record = doc.createNestedObject("record");
+  record["idBarchetta"] = ID_BARCHETTA;
+  
+  JsonArray datiSensori = doc.createNestedArray("datiSensori");
+  
+  JsonObject datiSensori_0 = datiSensori.createNestedObject();
+  datiSensori_0["valore"].set((float) waterTemp);
+  datiSensori_0["idSensore"] = ID_PROBE;
+  
+  JsonObject datiSensori_1 = datiSensori.createNestedObject();
+  datiSensori_1["valore"].set((float) airTemp);
+  datiSensori_1["idSensore"] = ID_DHT11_TEMP;
+  
+  JsonObject datiSensori_2 = datiSensori.createNestedObject();
+  datiSensori_2["valore"].set((float) airHumidity);
+  datiSensori_2["idSensore"] = ID_DHT11_HUM;
+
+  String message = "";
+  serializeJson(doc, message);
+  //Serial.println(message);
+  Serial.println("data sent");
+  char payload[message.length()];
+  message.toCharArray(payload, message.length());
+  
+  //send the actual message
+  Serial.println(mqtt.publish(MQTT_DATA_TOPIC, payload));
 }
