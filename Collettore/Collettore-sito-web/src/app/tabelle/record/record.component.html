@@ -1,44 +1,44 @@
 <table mat-table [dataSource]="record" multiTemplateDataRows class="mat-elevation-z8" style="width: 100%">
   <!-- Id barchetta -->
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>Id</th>
+    <th mat-header-cell *matHeaderCellDef>Id barchetta</th>
     <td mat-cell *matCellDef="let element"> {{element.record.idBarchetta.path}} </td>
   </ng-container>
 
   <!-- Latitudine -->
   <ng-container matColumnDef="latitudine">
     <th mat-header-cell *matHeaderCellDef>Latitudine</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.latitudine}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.record.latitudine}}°</td>
   </ng-container>
 
   <!-- Longitudine -->
   <ng-container matColumnDef="longitudine">
     <th mat-header-cell *matHeaderCellDef>Longitudine</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.longitudine}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.record.longitudine}}°</td>
   </ng-container>
 
   <!-- Altitudine -->
   <ng-container matColumnDef="altitudine">
     <th mat-header-cell *matHeaderCellDef>Altitudine</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.altitudine}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.record.altitudine}} m</td>
   </ng-container>
 
   <!-- Data e ora -->
   <ng-container matColumnDef="dateTime">
     <th mat-header-cell *matHeaderCellDef>Data e ora</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.dateTime.toDate() | date:'medium'}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.record.dateTime.toDate() | date:'medium'}}</td>
   </ng-container>
 
   <!-- N. satelliti -->
   <ng-container matColumnDef="satelliti">
     <th mat-header-cell *matHeaderCellDef>N. satelliti</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.satelliti}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.record.satelliti}}</td>
   </ng-container>
 
   <!-- Velocità -->
   <ng-container matColumnDef="velocita">
     <th mat-header-cell *matHeaderCellDef>Velocità</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.velocita}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.record.velocita}} m/s&#178;</td>
   </ng-container>
   
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -55,7 +55,7 @@
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
   <tr mat-row *matRowDef="let element; columns: displayedColumns;"
       class="element-row"
       [class.example-expanded-row]="expandedElement === element"

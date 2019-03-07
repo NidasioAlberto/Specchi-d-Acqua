@@ -9,10 +9,10 @@ import {
 
 export const slider =
   trigger('routeAnimations', [
-    transition('* => isLeft', slideTo('left') ),
-    transition('* => isRight', slideTo('right') ),
-    transition('isRight => *', slideTo('left') ),
-    transition('isLeft => *', slideTo('right') )
+    transition('isCenter => isLeft', slideTo('left') ),
+    transition('isCenter => isRight', slideTo('right') ),
+    transition('isRight => isCenter', slideTo('left') ),
+    transition('isLeft => isCenter', slideTo('right') )
   ]);
 
 function slideTo(direction) {

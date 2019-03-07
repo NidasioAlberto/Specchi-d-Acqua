@@ -6,7 +6,7 @@ import { TabelleComponent } from './tabelle/tabelle.component';
 
 const routes: Routes = [
   { path: 'mappa', component: MappaComponent, data: { animation: 'isLeft' } },
-  { path: 'grafici', component: GraficiComponent },
+  { path: 'grafici', component: GraficiComponent, data: { animation: 'isCenter'} },
   { path: 'tabelle', component: TabelleComponent, data: { animation: 'isRight' } },
   { path: '', redirectTo: '/mappa', pathMatch: 'full'}
 ];

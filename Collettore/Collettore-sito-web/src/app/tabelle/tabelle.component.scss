@@ -1,3 +1,9 @@
-.card {
-  margin: 32px;
+.contenitore {
+  height: calc(100% - 64px);
+  padding: 32px;
+}
+
+.tabella {
+  height: 100%;
+  overflow: auto;
 }
