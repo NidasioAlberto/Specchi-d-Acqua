@@ -1,0 +1,6 @@
+<!-- top bar -->
+<app-main-menu></app-main-menu>
+
+<main [@routeAnimations]="prepareRoute(outlet)">
+  <router-outlet #outlet="outlet"></router-outlet>
+</main>
