@@ -22,3 +22,10 @@ tr.element-row:not(.example-expanded-row):hover {
 tr.element-row:not(.example-expanded-row):active {
   background: #efefef;
 }
+
+.avviso {
+  width: calc(100% - 16px);
+  margin: 0 8px;
+  margin-top: 8px;
+  text-align: center;
+}

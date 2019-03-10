@@ -1,3 +1,32 @@
-<p>
-  barchette works!
-</p>
+<div class="contenitore">
+<mat-accordion  class="example-headers-align">
+    <mat-expansion-panel hideToggle *ngFor="let barchetta of barchette | async" (opened)="aperturaPannello(barchetta)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{barchetta.nome}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{barchetta.note}}
+          <mat-icon>directions_boat</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        Ultima posizione conosciuta: {{(barchetta.ultimaPosizione | async)?.dateTime | date:'medium'}} {{(barchetta.ultimaPosizione | async)?.latitudine}} {{(barchetta.ultimaPosizione | async)?.longitudine}} {{(barchetta.ultimaPosizione | async) == undefined ? "nessuna" : ''}}
+        <mat-slide-toggle [checked]="barchetta.alimentazioneFotovoltaica" disabled>Alimentazione fotovoltaica</mat-slide-toggle>
+      </div>
+
+      <mat-list role="list">
+        <h3 mat-subheader>Sensori</h3>
+        <mat-list-item role="listitem" *ngFor="let sensore of barchetta.datiSensori; last as last">
+          {{sensore.nome}}: {{sensore.note}}
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        </mat-list-item>
+      </mat-list>
+
+      <mat-action-row>
+        <button mat-button color="primary" (click)="modificaBarchetta(barchetta)" disabled>Modifica</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -12,7 +12,7 @@ export const slider =
     transition('isCenter => isLeft', slideTo('left') ),
     transition('isCenter => isRight', slideTo('right') ),
     transition('isRight => isCenter', slideTo('left') ),
-    transition('isLeft => isCenter', slideTo('right') )
+    transition('isLeft => isCenterjk', slideTo('right') )
   ]);
 
 function slideTo(direction) {

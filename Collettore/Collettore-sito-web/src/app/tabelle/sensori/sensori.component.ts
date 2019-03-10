@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Sensore } from 'src/app/core/types/sensore';
+import { DatabaseService } from 'src/app/core/database.service';
 
 @Component({
   selector: 'app-sensori',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SensoriComponent implements OnInit {
 
-  constructor() { }
+  displayedColumns: string[] = ['nome', 'note', 'unita', 'modifica']
+
+  sensori: Observable<Sensore[]>
+
+  constructor(public database: DatabaseService) { }
 
   ngOnInit() {
+    this.sensori = this.database.ottieniSensori()
   }
 
+  modificaSensore(sensore: Sensore) {
+    console.log(sensore)
+  }
 }

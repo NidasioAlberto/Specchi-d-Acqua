@@ -1,44 +1,56 @@
-<table mat-table [dataSource]="record" multiTemplateDataRows class="mat-elevation-z8" style="width: 100%">
+<mat-chip class="avviso" disabled>
+  <div style="width: 100%; text-align: center;">
+    La lista mostra solo gli ultimi 16 record, e si aggiornano in automatico!
+  </div>
+</mat-chip>
+<table mat-table [dataSource]="record | async" multiTemplateDataRows style="width: 100%">
   <!-- Id barchetta -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef>Id barchetta</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.idBarchetta.path}} </td>
+    <ng-container *matCellDef="let element">
+      <ng-container *ngIf="element.barchetta != undefined; else elseTemplate">
+        <td mat-cell>{{(element.barchetta | async)?.nome}}</td>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <td mat-cell>{{element.idBarchetta.path}}</td>
+      </ng-template>
+    </ng-container>
   </ng-container>
 
   <!-- Latitudine -->
   <ng-container matColumnDef="latitudine">
     <th mat-header-cell *matHeaderCellDef>Latitudine</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.latitudine}}°</td>
+    <td mat-cell *matCellDef="let element">{{element.latitudine}}°</td>
   </ng-container>
 
   <!-- Longitudine -->
   <ng-container matColumnDef="longitudine">
     <th mat-header-cell *matHeaderCellDef>Longitudine</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.longitudine}}°</td>
+    <td mat-cell *matCellDef="let element">{{element.longitudine}}°</td>
   </ng-container>
 
   <!-- Altitudine -->
   <ng-container matColumnDef="altitudine">
     <th mat-header-cell *matHeaderCellDef>Altitudine</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.altitudine}} m</td>
+    <td mat-cell *matCellDef="let element">{{element.altitudine}} m</td>
   </ng-container>
 
   <!-- Data e ora -->
   <ng-container matColumnDef="dateTime">
     <th mat-header-cell *matHeaderCellDef>Data e ora</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.dateTime.toDate() | date:'medium'}}</td>
+    <td mat-cell *matCellDef="let element">{{element.dateTime | date:'medium'}}</td>
   </ng-container>
 
   <!-- N. satelliti -->
   <ng-container matColumnDef="satelliti">
     <th mat-header-cell *matHeaderCellDef>N. satelliti</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.satelliti}}</td>
+    <td mat-cell *matCellDef="let element">{{element.satelliti}}</td>
   </ng-container>
 
   <!-- Velocità -->
   <ng-container matColumnDef="velocita">
     <th mat-header-cell *matHeaderCellDef>Velocità</th>
-    <td mat-cell *matCellDef="let element"> {{element.record.velocita}} m/s&#178;</td>
+    <td mat-cell *matCellDef="let element">{{element.velocita}} m/s&#178;</td>
   </ng-container>
   
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -47,8 +59,13 @@
       <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
         <mat-chip-list>
           <mat-chip *ngFor="let datiSensore of element.datiSensori" selected color="accent" (click)="mostraDatiSensore(datiSensore)">
-            {{datiSensore.idSensore.path}}:
-            {{datiSensore.valore}}
+            <ng-container *ngIf="datiSensore.sensore != undefined; else elseTemplate">
+              {{(datiSensore.sensore | async)?.nome}}:
+            </ng-container>
+            <ng-template #elseTemplate>
+              {{datiSensore.idSensore.path}}:
+            </ng-template>
+            {{datiSensore.valore}} {{(datiSensore.sensore | async)?.unita}}
           </mat-chip>
         </mat-chip-list>
       </div>
@@ -59,7 +76,7 @@
   <tr mat-row *matRowDef="let element; columns: displayedColumns;"
       class="element-row"
       [class.example-expanded-row]="expandedElement === element"
-      (click)="expandedElement = expandedElement === element ? null : element">
+      (click)="expandedElement = expandedElement === element ? null : element; expandedElement === element ? aperturaPannello(element) : null">
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
 </table>

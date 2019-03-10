@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
-import { DatiSensore } from 'src/app/core/types/dati-sensore';
-import { FirestoreService } from 'src/app/core/firestore.service';
-import { Observable } from 'rxjs';
-import { Sensore } from 'src/app/core/types/sensore';
+import { DatiSensore } from 'src/app/core/types/dati-sensore'
+import { Observable } from 'rxjs'
+import { Sensore } from 'src/app/core/types/sensore'
+import { DatabaseService } from 'src/app/core/database.service'
 
 @Component({
   selector: 'app-dialog-dati-sensore',
@@ -16,11 +16,9 @@ export class DialogDatiSensoreComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DialogDatiSensoreComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DatiSensore,
-    public firestore: FirestoreService) { }
+    public database: DatabaseService) { }
   
   ngOnInit() {
-    this.sensore = this.firestore.ottieniSensore(this.data.idSensore)
-
-    this.sensore.subscribe(console.log)
+    this.sensore = this.database.ottieniSensore(this.data.idSensore)
   }
 }

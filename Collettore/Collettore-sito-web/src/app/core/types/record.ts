@@ -1,16 +1,16 @@
 import { DocumentReference } from '@angular/fire/firestore'
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
-import { DatiSensore } from './dati-sensore';
+import { DatiSensore } from './dati-sensore'
+import { Observable } from 'rxjs'
+import { Barchetta } from './barchetta'
 
 export interface Record {
-  record: {
-    latitudine: number,
-    longitudine: number,
-    altitude: number,
-    dateTime: any
-    idBarchetta: DocumentReference,
-    satelliti: number,
-    velocita: number
-  },
+  latitudine: number,
+  longitudine: number,
+  altitude: number,
+  dateTime: any
+  idBarchetta: DocumentReference,
+  barchetta?: Observable<Barchetta>
+  satelliti: number,
+  velocita: number
   datiSensori: DatiSensore[]
 }

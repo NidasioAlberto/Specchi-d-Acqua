@@ -1,4 +1,5 @@
 export interface Sensore {
-    nome: string,
+    nome: string
     note: string
+    unita: string
 }

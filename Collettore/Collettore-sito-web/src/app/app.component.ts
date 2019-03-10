@@ -1,9 +1,9 @@
-import { Record } from './core/types/record';
-import { Observable } from 'rxjs';
+import { Record } from './core/types/record'
+import { Observable } from 'rxjs'
 import { Component, OnInit } from '@angular/core'
-import { FirestoreService } from './core/firestore.service'
 import { RouterOutlet, Router } from '@angular/router'
 import { slider } from './route-animations'
+import { DatabaseService } from './core/database.service'
 
 @Component({
   selector: 'app-root',
@@ -17,10 +17,10 @@ export class AppComponent implements OnInit {
 
   record: Observable<Record[]>
 
-  constructor(public firestore: FirestoreService) { }
+  constructor(public database: DatabaseService) { }
 
   ngOnInit() {
-    this.record = this.firestore.ottieniRecord()
+    this.record = this.database.ottieniRecord()
   }
 
   prepareRoute(outlet: RouterOutlet) {

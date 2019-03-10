@@ -18,12 +18,12 @@ const size_t capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(2) + JSON_OBJECT
 #define WIFI_SSID "Team specchi"
 #define WIFI_PSW "Fornaroli"
 
-#define ID_BARCHETTA 1
-#define MQTT_USR "barca1"
-#define MQTT_PSW "barca1"
+#define ID_BARCHETTA 3
+#define MQTT_USR "barca3"
+#define MQTT_PSW "barca3"
 #define MQTT_ADDR "192.168.4.100"
 #define MQTT_DATA_TOPIC "records"
-#define MQTT_CONFIG_TOPIC "barca1/config"
+#define MQTT_CONFIG_TOPIC "barca3/config"
 
 WiFiClient espClient;
 PubSubClient mqtt(espClient);
@@ -182,20 +182,20 @@ void recordSensorsData() {
   airTemp = dht.readTemperature();
   airHumidity = dht.readHumidity();
 
-  Serial.print("Water tmp: "); Serial.print(waterTemp);
-  Serial.print(" air tmp: "); Serial.print(airTemp);
-  Serial.print(" air hum: "); Serial.println(airHumidity);
+  //Serial.print("Water tmp: "); Serial.print(waterTemp);
+  //Serial.print(" air tmp: "); Serial.print(airTemp);
+  //Serial.print(" air hum: "); Serial.println(airHumidity);
 }
 
 void sendSensorsData() {
-  DynamicJsonDocument doc(capacity);
+  DynamicJsonDocument record(capacity);
   
-  JsonObject record = doc.createNestedObject("record");
+  //JsonObject record = doc.createNestedObject("record");
   record["idBarchetta"] = ID_BARCHETTA;
-  record["latitude"] = String(gpsParser.location.lat(), 6);
-  record["longitude"] = String(gpsParser.location.lng(), 6);
+  record["latitudine"] = String(gpsParser.location.lat(), 6); 
+  record["longitudine"] = String(gpsParser.location.lng(), 6);
   record["satelliti"] = gpsParser.satellites.value();
-  record["altitude"] = gpsParser.altitude.meters();
+  record["altitudine"] = gpsParser.altitude.meters();
   record["velocita"] = gpsParser.speed.mps();
   record["hdop"] = (float) gpsParser.hdop.value()/100;
   String dateTime = "";
@@ -212,7 +212,7 @@ void sendSensorsData() {
   dateTime += gpsParser.time.second(); //2019-02-28 10:10:00
   record["dateTime"] = dateTime;
   
-  JsonArray datiSensori = doc.createNestedArray("datiSensori");
+  JsonArray datiSensori = record.createNestedArray("datiSensori");
 
   if(!isnan(waterTemp)) {
     JsonObject datiSensori_0 = datiSensori.createNestedObject();
@@ -233,11 +233,13 @@ void sendSensorsData() {
   }
 
   String message = "";
-  serializeJson(doc, message);
+  serializeJson(record, message);
   //Serial.println(message);
   Serial.println("data sent");
   char payload[message.length() + 1];
   message.toCharArray(payload, message.length() + 1);
+
+  //Serial.println(payload);
   
   //send the actual message
   Serial.println(mqtt.publish(MQTT_DATA_TOPIC, payload));
