@@ -28,7 +28,7 @@ export class RecordComponent implements OnInit {
   constructor(public database: DatabaseService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.record = this.database.ottieniRecord()
+    this.record = this.database.ottieniRecord(16)
   }
 
   mostraDatiSensore(datiSensore: DatiSensore) {

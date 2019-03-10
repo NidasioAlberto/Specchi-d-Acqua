@@ -24,11 +24,20 @@ client.on('message', (topic, message) => {
     let messaggio = JSON.parse(message.toString())
     console.log(message.toString())
 
-    //nuovo metodo con il realtime database (consta meno, non è suddiviso in documenti)
-    /*database.ref('Record').push(messaggio, (err) => {
-        if(err) console.log(err)
-        else console.log('done')
-    })*/
+    //controllo i dati
+    if(messaggio['latitudine'] == 0 || messaggio['longitudine'] == 0 || messaggio['altitudine'] == 0) {
+        console.log('dati non validi')
+    } else {
+        messaggio['idBarchetta'] = String(messaggio['idBarchetta'])
+        messaggio['latitudine'] = parseInt(messaggio['latitudine'])
+        messaggio['longitudine'] = parseInt(messaggio['longitudine'])
+        messaggio['altitudine'] = parseInt(messaggio['altitudine'])
+        //nuovo metodo con il realtime database (consta meno, non è suddiviso in documenti)
+        database.ref('Record').push(messaggio, (err) => {
+            if(err) console.log(err)
+            else console.log('done')
+        })
+    }
     
     /* Vecchio metodo con il firestore
     //aggiusto i dati

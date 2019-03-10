@@ -8,6 +8,7 @@ import { AngularFireModule } from '@angular/fire'
 import { environment } from '../environments/environment'
 import { AngularFirestoreModule } from '@angular/fire/firestore'
 import { AgmCoreModule } from '@agm/core'
+import { ChartsModule } from 'ng2-charts'
 
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -51,6 +52,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database'
     AppRoutingModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    ChartsModule,
 
     //componenti material design
     MatToolbarModule,

@@ -1,8 +1,12 @@
 <!-- mappa -->
-<agm-map class="mappa">
-  <!--<agm-polyline>
-    <agm-polyline-point *ngFor="let recordSingolo of record | async"
-      [latitude]="recordSingolo.record.latitudine"
-      [longitude]="recordSingolo.record.longitudine"></agm-polyline-point>
-  </agm-polyline>-->
+<agm-map class="mappa" [latitude]="45.366535" [longitude]="9.683444" [zoom]="20">
+  <agm-polyline *ngFor="let recordBarchetta of recordDivisi | async"
+    [strokeWeight]="6"
+    [strokeOpacity]="0.75"
+    [zIndex]=""
+    [strokeColor]="recordBarchetta.colore">
+    <agm-polyline-point *ngFor="let recordSingolo of recordBarchetta.record"
+      [latitude]="recordSingolo.latitudine"
+      [longitude]="recordSingolo.longitudine"></agm-polyline-point>
+  </agm-polyline>
 </agm-map>

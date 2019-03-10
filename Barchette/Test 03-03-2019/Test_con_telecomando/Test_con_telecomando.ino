@@ -2,11 +2,14 @@
 #include <Servo.h>
 
 #define RED_LED 12
-#define GREEN_LED 13
+#define GREEN_LED 14
 
+#define FORWARD_PIN D1
+#define BACKWARD_PIN D3
+#define ENABLE_PIN D4
 #define MOTOR_PIN 2
 
-#define WIFI_SSID "Specchi d'Acqua"
+#define WIFI_SSID "Team specchi"
 #define WIFI_PSW "Fornaroli"
 
 WiFiServer server(1234);
@@ -20,8 +23,14 @@ void setup() {
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
 
-  pinMode(MOTOR_PIN, OUTPUT);
-  timone.attach(4);
+  pinMode(FORWARD_PIN, OUTPUT);
+  pinMode(BACKWARD_PIN, OUTPUT);
+  pinMode(ENABLE_PIN, OUTPUT);
+
+  digitalWrite(FORWARD_PIN, HIGH);
+  digitalWrite(BACKWARD_PIN, LOW);
+  
+  timone.attach(D7);
 
   //first set the red led on until the esp connect to the wifi
   digitalWrite(RED_LED, HIGH);
@@ -30,9 +39,6 @@ void setup() {
   Serial.begin(115200);
 
   connectToWifi();
-
-  //turn on the green led
-  digitalWrite(GREEN_LED, HIGH);
 }
 
 void loop() {
@@ -52,7 +58,8 @@ void loop() {
 
   WiFiClient client = server.available();
  
-  if (client) {
+  if(client) {
+    accendiVerde();
     while (client.connected()) {
       if(client.available()) {
         speed = "";
@@ -70,14 +77,30 @@ void loop() {
             speedF = speed.toFloat();
             directionF = direction.toFloat() * 57296 / 1000;
 
+            if(directionF > 90 || directionF < -90) indietro();
+            else avanti();
+
             if(speedF < 30) {
-              analogWrite(MOTOR_PIN, 0);
+              analogWrite(ENABLE_PIN, 0);
             } else {
-              analogWrite(MOTOR_PIN, map((int) speedF, 0, 100, 128, 1023));
+              analogWrite(ENABLE_PIN, map((int) speedF, 0, 100, 0, 1023));
             }
-            timone.write(map(directionF, 180, -180, 60, 120) );
+
+            //nuovo sistema per lo sterzo!
+            float angolo = 0;
+
+            if(directionF < 90 && directionF > -90) angolo = map(directionF, -90, 90, 60, 120);
+            if(directionF > 90 && directionF < 180) angolo = map(directionF, 90, 180, 60, 90);
+            if(directionF < -90 && directionF > -180) angolo = map(directionF, -180, -90, 90, 120);
+
+            timone.write(angolo);
+            /*if(directionF > 30) timone.write(130);
+            else if(directionF < -30) timone.write(70);
+            else timone.write(100);*/
+              //timone.write(map(directionF, -180, 180, 60, 120));
             
             Serial.print("Speed: "); Serial.print(speedF);
+            Serial.print(" angle: "); Serial.print(angolo);
             Serial.print(" direction: "); Serial.println(directionF);
             speed = "";
             direction = "";
@@ -94,7 +117,8 @@ void loop() {
  
     client.stop();
     Serial.println("Client disconnected");
- 
+    accendiRosso();
+    fermati();
   }
 }
 
@@ -116,4 +140,31 @@ void connectToWifi() {
   Serial.println(WiFi.localIP());
 
   server.begin();
+}
+
+void accendiRosso() {
+  digitalWrite(RED_LED, HIGH);
+  digitalWrite(GREEN_LED, LOW);
+}
+
+void accendiVerde() {
+  digitalWrite(RED_LED, LOW);
+  digitalWrite(GREEN_LED, HIGH);
+}
+
+void avanti() {
+  digitalWrite(FORWARD_PIN, HIGH);
+  digitalWrite(BACKWARD_PIN, LOW);
+}
+
+void indietro() {
+  digitalWrite(FORWARD_PIN, LOW);
+  digitalWrite(BACKWARD_PIN, HIGH);
+}
+
+void fermati() {
+  digitalWrite(FORWARD_PIN, LOW);
+  digitalWrite(BACKWARD_PIN, LOW);
+  digitalWrite(ENABLE_PIN, LOW);
+  timone.write(100);
 }

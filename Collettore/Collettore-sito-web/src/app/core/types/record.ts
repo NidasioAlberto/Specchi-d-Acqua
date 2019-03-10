@@ -6,7 +6,7 @@ import { Barchetta } from './barchetta'
 export interface Record {
   latitudine: number,
   longitudine: number,
-  altitude: number,
+  altitudine: number,
   dateTime: any
   idBarchetta: DocumentReference,
   barchetta?: Observable<Barchetta>

@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators'
+import { map, concatAll } from 'rxjs/operators'
 import { Observable, combineLatest } from 'rxjs'
 import { AngularFirestore, DocumentReference } from '@angular/fire/firestore'
 import { AngularFireDatabase } from '@angular/fire/database'
@@ -7,6 +7,7 @@ import { Record } from './types/record'
 import { Sensore } from './types/sensore'
 import { Barchetta } from './types/barchetta';
 import { DatiSensore } from './types/dati-sensore';
+import { isString } from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -14,29 +15,59 @@ import { DatiSensore } from './types/dati-sensore';
 export class DatabaseService {
   constructor(public firestore: AngularFirestore, public fDatabase: AngularFireDatabase) { }
 
-  ottieniRecord() {
+  ottieniRecord(limite?: number, idBarchetta?: string) {
     console.log('ottieniRecord')
 
-    return this.fDatabase.list<Record>('Record', ref => ref.orderByChild('dateTime').limitToLast(16)).valueChanges().pipe(
+    return this.fDatabase.list<Record>('Record', ref => {
+      let query
+      if(idBarchetta == undefined) query = ref.orderByChild('dateTime')
+      else query = ref.orderByChild('idBarchetta').equalTo(idBarchetta)
+      if(limite > 0) query = query.limitToLast(limite)
+      return query
+    }).valueChanges().pipe(
       map(record => {
         record.forEach(element => {
+          if(isString(element.latitudine)) element.latitudine = parseFloat(element.latitudine)
+          if(isString(element.longitudine)) element.longitudine = parseFloat(element.longitudine)
+          if(isString(element.altitudine)) element.altitudine = parseFloat(element.altitudine)
+
           element.idBarchetta = this.firestore.collection('Barchette').doc(String(element.idBarchetta)).ref
 
           element.datiSensori.forEach(element2 => {
             element2.idSensore = this.firestore.collection('Sensori').doc(String(element2.idSensore)).ref
           })
         })
-
-        return record.reverse()
+        return record//.reverse()
       })
     )
 
     //return this.firestore.collection<Record>('Record', ref => ref.orderBy('record.dateTime', 'desc').limit(5)).valueChanges()
   }
 
-  ottieniRecordDivisi(record?: Observable<Record[]>) {
+  ottieniRecordDivisi(record?: Observable<Record[]>, limite?: number) {
     console.log('ottieniRecordDivisi')
-    if(record == undefined) record = this.ottieniRecord()
+
+    //recupero gli id delle barchette
+    return this.ottieniBarchette().pipe(
+      map(barchette => {
+        return barchette.map(barchetta => barchetta.id)
+      })
+    ).pipe(
+      map(idBarchette => {
+        return combineLatest(idBarchette.map(id => this.ottieniRecord(limite, id).pipe(
+          map(record => {
+            return {
+              record,
+              idBarchetta: this.firestore.collection('Barchetta').doc(String(id)).ref
+            }
+          })
+        )))
+      }),
+      concatAll()
+    )
+
+    /*console.log(limite)
+    if(record == undefined) record = this.ottieniRecord(limite)
     return record.pipe(
       map(record => {
         //recupero tutte le diverse barchette
@@ -46,17 +77,25 @@ export class DatabaseService {
         })
 
         //suddivido i record x barchette
-        let record2: Record[][] = new Array(barche.length)
+        let record2: {
+          idBarchetta: DocumentReference,
+          record: Record[]
+        }[] = new Array(barche.length)
         record.forEach(singolo => {
           let index = barche.indexOf(singolo.idBarchetta.path)
 
-          if(record2[index] == undefined) record2[index] = []
+          if(record2[index] == undefined) {
+            record2[index] = {
+              record: [],
+              idBarchetta: singolo.idBarchetta
+            }
+          }
 
-          record2[index].push(singolo)
+          record2[index].record.push(singolo)
         })
         return record2
       })
-    )
+    )*/
   }
 
   ottieniSensore(sensore: DocumentReference) {
