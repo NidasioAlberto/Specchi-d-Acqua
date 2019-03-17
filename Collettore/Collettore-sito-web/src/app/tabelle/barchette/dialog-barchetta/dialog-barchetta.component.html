@@ -1,0 +1,31 @@
+<h1 mat-dialog-title *ngIf="mode == 'edit'">Modifica barchetta</h1>
+<h1 mat-dialog-title *ngIf="mode == 'new'">Crea barchetta</h1>
+<div mat-dialog-content style="width: 300px;">
+  <div class="contenitore">
+    <!-- Nome -->
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Nome" value="{{barchetta.nome}}">
+    </mat-form-field>
+    
+    <!-- Note -->
+    <mat-form-field appearance="outline">
+      <mat-label>Note</mat-label>
+      <input matInput placeholder="Note" value="{{barchetta.note}}">
+    </mat-form-field>
+    
+    <!-- Alimentazione -->
+    <mat-slide-toggle checked="{{barchetta.alimentazioneFotovoltaica}}">Alimentazione fotovoltaica</mat-slide-toggle>
+
+    <!-- Sensori -->
+    <mat-form-field style="margin-top: 8px;">
+      <mat-select placeholder="Sensori" [formControl]="sensoriSelezionati" multiple>
+        <mat-option *ngFor="let sensore of sensori | async" [value]="sensore.id">{{sensore.nome}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button>No Thanks</button>
+  <button mat-button (click)="salva()">Ok</button>
+</div>

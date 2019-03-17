@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AngularFireModule } from '@angular/fire'
 import { environment } from '../environments/environment'
@@ -24,6 +25,8 @@ import { MatDialogModule } from '@angular/material/dialog'
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatListModule } from '@angular/material/list'
+import { MatInputModule } from '@angular/material/input'
+import { MatSelectModule } from '@angular/material/select'
 
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { MappaComponent } from './mappa/mappa.component'
@@ -34,6 +37,7 @@ import { BarchetteComponent } from './tabelle/barchette/barchette.component'
 import { SensoriComponent } from './tabelle/sensori/sensori.component'
 import { DialogDatiSensoreComponent } from './tabelle/record/dialog-dati-sensore/dialog-dati-sensore.component'
 import { AngularFireDatabaseModule } from '@angular/fire/database'
+import { DialogBarchettaComponent } from './tabelle/barchette/dialog-barchetta/dialog-barchetta.component'
 
 @NgModule({
   declarations: [
@@ -46,6 +50,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database'
     BarchetteComponent,
     SensoriComponent,
     DialogDatiSensoreComponent,
+    DialogBarchettaComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +58,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database'
     BrowserAnimationsModule,
     FlexLayoutModule,
     ChartsModule,
+    FormsModule, ReactiveFormsModule,
 
     //componenti material design
     MatToolbarModule,
@@ -67,6 +73,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/database'
     MatExpansionModule,
     MatSlideToggleModule,
     MatListModule,
+    MatInputModule,
+    MatSelectModule,
 
     //angular google maps
     AgmCoreModule.forRoot({
@@ -79,7 +87,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/database'
     AngularFireDatabaseModule
   ],
   entryComponents: [
-    DialogDatiSensoreComponent
+    DialogDatiSensoreComponent,
+    DialogBarchettaComponent
   ],
   providers: [],
   bootstrap: [AppComponent],

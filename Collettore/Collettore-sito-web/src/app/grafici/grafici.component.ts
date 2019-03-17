@@ -23,7 +23,7 @@ export class GraficiComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'x axis'
+          labelString: 'Tempo'
         },
         ticks: {
           suggestedMin: 0,
@@ -37,7 +37,7 @@ export class GraficiComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'y axis'
+          labelString: 'Altitudine'
         }
       }]
     },
@@ -74,12 +74,15 @@ export class GraficiComponent implements OnInit {
   constructor(public database: DatabaseService) { }
 
   ngOnInit() {
-    this.database.ottieniRecordDivisi(undefined, 40).subscribe(record => {
+    this.database.ottieniRecordDivisi(undefined, 10).subscribe(record => {
       this.lineChartData = []
       this.lineChartLabels = []
       record.forEach(recordSingolo => {
+
         this.lineChartData.push({
           label: recordSingolo.idBarchetta.path,
+          borderColor: '#'+Math.floor(Math.random()*16777215).toString(16),
+          fill: false,
           data: recordSingolo.record.map((el, index) => {
             return {
               y: el.altitudine,

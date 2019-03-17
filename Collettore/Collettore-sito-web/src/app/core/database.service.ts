@@ -27,13 +27,13 @@ export class DatabaseService {
     }).valueChanges().pipe(
       map(record => {
         record.forEach(element => {
-          if(isString(element.latitudine)) element.latitudine = parseFloat(element.latitudine)
-          if(isString(element.longitudine)) element.longitudine = parseFloat(element.longitudine)
-          if(isString(element.altitudine)) element.altitudine = parseFloat(element.altitudine)
+          if(typeof element.latitudine == 'string') element.latitudine = parseFloat(element.latitudine as string)
+          if(typeof element.longitudine == 'string') element.longitudine = parseFloat(element.longitudine as string)
+          if(typeof element.altitudine == 'string') element.altitudine = parseFloat(element.altitudine as string)
 
           element.idBarchetta = this.firestore.collection('Barchette').doc(String(element.idBarchetta)).ref
 
-          element.datiSensori.forEach(element2 => {
+          if(element.datiSensori != undefined) element.datiSensori.forEach(element2 => {
             element2.idSensore = this.firestore.collection('Sensori').doc(String(element2.idSensore)).ref
           })
         })
@@ -107,7 +107,7 @@ export class DatabaseService {
     console.log('ottieniBarchette')
     return this.firestore.collection<Barchetta>('Barchette').snapshotChanges().pipe(
       map(actions => actions.map(action => {
-        let barchetta = action.payload.doc.data() as Barchetta
+        let barchetta = action.payload.doc.data()
         barchetta.id = action.payload.doc.ref.id
         return barchetta
       }))
@@ -149,6 +149,12 @@ export class DatabaseService {
 
   ottieniSensori() {
     console.log('ottieniSensori')
-    return this.firestore.collection<Sensore>('Sensori').valueChanges()
+    return this.firestore.collection<Sensore>('Sensori').snapshotChanges().pipe(
+      map(actions => actions.map(action => {
+        let sensore = action.payload.doc.data()
+        sensore.id = action.payload.doc.ref.id
+        return sensore
+      }))
+    )
   }
 }

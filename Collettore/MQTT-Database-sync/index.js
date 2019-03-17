@@ -29,9 +29,9 @@ client.on('message', (topic, message) => {
         console.log('dati non validi')
     } else {
         messaggio['idBarchetta'] = String(messaggio['idBarchetta'])
-        messaggio['latitudine'] = parseInt(messaggio['latitudine'])
-        messaggio['longitudine'] = parseInt(messaggio['longitudine'])
-        messaggio['altitudine'] = parseInt(messaggio['altitudine'])
+        messaggio['latitudine'] = parseFloat(messaggio['latitudine'])
+        messaggio['longitudine'] = parseFloat(messaggio['longitudine'])
+        messaggio['altitudine'] = parseFloat(messaggio['altitudine'])
         //nuovo metodo con il realtime database (consta meno, non è suddiviso in documenti)
         database.ref('Record').push(messaggio, (err) => {
             if(err) console.log(err)

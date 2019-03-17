@@ -2,7 +2,7 @@
 #include <SoftwareSerial.h>
 
 TinyGPSPlus gpsParser;
-SoftwareSerial gps(D8, D7);
+SoftwareSerial gps(D8, D8);
 
 void setup() {
   Serial.begin(9600);

@@ -3,6 +3,8 @@ import { DatabaseService } from 'src/app/core/database.service';
 import { Barchetta } from 'src/app/core/types/barchetta';
 import { Observable } from 'rxjs';
 import { Sensore } from 'src/app/core/types/sensore';
+import { MatDialog } from '@angular/material';
+import { DialogBarchettaComponent } from './dialog-barchetta/dialog-barchetta.component';
 
 @Component({
   selector: 'app-barchette',
@@ -13,7 +15,7 @@ export class BarchetteComponent implements OnInit {
 
   barchette: Observable<Barchetta[]>
 
-  constructor(public database: DatabaseService) { }
+  constructor(public database: DatabaseService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.barchette = this.database.ottieniBarchette()
@@ -24,7 +26,9 @@ export class BarchetteComponent implements OnInit {
     barchetta.datiSensori = []
     barchetta.sensori.forEach(sensore => {
       sensore.get().then(value => {
-        barchetta.datiSensori.push(value.data() as Sensore)
+        let tmp = value.data() as Sensore
+        tmp.id = value.id
+        barchetta.datiSensori.push(tmp)
       })
     })
 
@@ -35,6 +39,6 @@ export class BarchetteComponent implements OnInit {
   }
 
   modificaBarchetta(barchetta: Barchetta) {
-    console.log(barchetta)
+    this.dialog.open(DialogBarchettaComponent, { data: barchetta }).afterClosed().subscribe(console.log)
   }
 }
