@@ -1,1 +1,0 @@
-enum StatoConnessione { disconnesso, connesso, inConnessione }
