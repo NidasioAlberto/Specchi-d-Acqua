@@ -1,0 +1,22 @@
+<div class="contenitore">
+    <mat-form-field>
+        <mat-select placeholder="Visualizza per" [(value)]="modalita">
+            <mat-option value="barchette">Barchette</mat-option>
+            <mat-option value="sensori">Sensori</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="modalita == 'barchette'">
+        <mat-select placeholder="Barchetta" [(value)]="barchetta">
+            <mat-option *ngFor="let barchetta2 of barchette" value="{{barchetta2.id}}">{{barchetta2.nome}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="modalita == 'sensori'">
+        <mat-select placeholder="Sensore" [(value)]="sensore">
+            <mat-option *ngFor="let sensore2 of sensori" value="{{sensore2.id}}">{{sensore2.nome}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="salvaImpostazioni()">Ok</button>
+</div>

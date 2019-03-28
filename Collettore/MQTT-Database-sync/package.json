@@ -1,0 +1,19 @@
+{
+  "name": "mqtt-database-sync-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mqtt": "^2.5.0",
+    "@types/mysql": "^2.15.5",
+    "firebase-admin": "^7.1.0",
+    "mqtt": "^2.18.8",
+    "mysql": "^2.16.0",
+    "typescript": "^3.3.3333"
+  }
+}
