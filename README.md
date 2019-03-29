@@ -71,20 +71,18 @@ assieme a un circuito di ricarica dedicato; Sul coperchio è possibile installa
 
 L'Esp8266 ci permette di utilizzare i sensori **DHT11** (temperatura e umidità aria), **DS18B20** (Sonda temperatura acqua) e il modulo gps **GT-U7**. Per collegare tutti questi componenti abbiamo preparato una scheda millefori che verrà alloggiata nel coperchio dello scafo per una manutenzione facile e semplice. Una volta finalizzato il design potremo creare un vera e propria **PCB** con componenti **SMT**.
 
-![Scheda millefori]()
-![Alloggio parti nel coperchio]()
+![Scheda millefori](Foto/Scheda_millefori.jpg)
 
 #### Alimentazione
 
 Per alimentare la scheda e i motori abbiamo utilizzato due set di batterie separati. Il primo, composto da 4 batteria AA fornisce elettricità al motore DC che muove l'elica, e il secondo, formato da 6 batterie AAA che alimenta l'elettronica e il motore passo passo che inclina l'elica.
 Questo evita che, nel caso di cali di tensione all'elettronica dovuti all'avvio del motore o se si scaricano le batterie del motore DC, la barchetta perda il segnale del Collettore e non risponda più ai programmi.
 
-![Foto alloggiamento batterie]()
+![Foto alloggiamento batterie](Foto/Alloggiamento_componenti.jpg)
 
 #### Schemi tecnici
 
 ![Schema millefori]()
-![Schema barchetta]()
 
 ## Descrizione tecnica: collettore
 
@@ -96,7 +94,7 @@ Per il prototipo abbiamo utilizzato una rete **Wifi** che collega barchette e co
 
 Per il collettore, ovvero il server a terra che memorizza i dati, abbiamo utilizzato un **Raspberry pi**.
 
-![Foto raspberry]()
+![Foto raspberry](Foto/Raspberry.jpg)
 
 ## Software
 
