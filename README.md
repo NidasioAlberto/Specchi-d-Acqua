@@ -1,4 +1,4 @@
-# Specchi-d-Acqua
+# Specchi d'Acqua
 
 [Manifesto team Specchi d'Acqua](Manifesto_team_Specchi_d'Acqua.pdf)
 
@@ -34,7 +34,7 @@ Lo studio da parte degli scienziati di tutti questi fenomeni interconnessi e alt
 **Video**: [Presentazione del progetto](https://youtu.be/HUvQelgl1Qg)
 
 La raccolta dati è fondamentale prima di ogni azione mirata: la si fa per un’analisi di mercato, per l’acquisto di un giocatore, perfino per un attacco informatico. Impiegarla per studiare i fenomeni naturali è però più complesso e costoso, infatti richiede attrezzature all’avanguardia non sempre recuperabili.
-Noi abbiamo la soluzione! Il nostro progetto consiste in una flotta di droni acquatici, realizzati con materiali riciclati, in grado di distribuirsi in autonomia in un’area prestabilita, tornando alla base a fine missione. Grazie a un modulo GPS installato su ciascuno di essi, i robot potranno capire dove si trovano e mantenere la posizione nonostante le correnti. I droni potranno essere equipaggiati con diversi sensori per monitorare qualunque tipo di dato sia richiesto dagli analisti e, attraverso un sistema di comunicazione wireless, saranno in grado di trasmettere i dati in tempo reale alla base, associandoli con la posizione recuperata dal GPS.I prototipi che stiamo preparando hanno molti aspetti innovativi. La costruzione dello scafo utilizza bottigliette di plastica e questo ci permette di recuperare quello che altrimenti sarebbe un rifiuto abbandonato.
+Noi abbiamo la soluzione! Il nostro progetto consiste in una flotta di droni acquatici, realizzati con materiali riciclati, in grado di distribuirsi in autonomia in un’area prestabilita, tornando alla base a fine missione. Grazie a un modulo GPS installato su ciascuno di essi, i robot potranno capire dove si trovano e mantenere la posizione nonostante le correnti. I droni potranno essere equipaggiati con diversi sensori per monitorare qualunque tipo di dato sia richiesto dagli analisti e, attraverso un sistema di comunicazione wireless, saranno in grado di trasmettere i dati in tempo reale alla base, associandoli con la posizione recuperata dal GPS.I prototipi che abbiamo preprato hanno molti aspetti innovativi. La costruzione dello scafo utilizza bottigliette di plastica e questo ci permette di recuperare quello che altrimenti sarebbe un rifiuto abbandonato.
 Inoltre sia il codice che i design del robot saranno open-source permettendo così a chiunque di migliorare il progetto apportando nuove modifiche.
 Il robot utilizza anche parti stampate in 3D. Questi componenti sono realizzati su misura, permettendo a ogni modello di essere equipaggiato con diversi sensori e batterie, per adattarsi alle esigenze del momento.
 

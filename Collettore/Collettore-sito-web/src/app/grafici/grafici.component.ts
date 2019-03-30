@@ -28,7 +28,7 @@ export class GraficiComponent implements OnInit {
           position: 'left',
           ticks: {
             min: 0,
-            max: 100
+            max: 60
           }
         }
       ]

@@ -83,7 +83,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 
     ChartsModule,
     HttpClientModule,
-    //MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFirestoreModule,

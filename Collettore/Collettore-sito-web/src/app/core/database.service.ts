@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable, combineLatest } from 'rxjs'
 import { map, concatAll, mergeAll } from 'rxjs/operators'
 import { Record, Barchetta, Sensore, DatiSensore } from './tipi'
-//import { MqttService, IMqttMessage } from 'ngx-mqtt';
+import { MqttService, IMqttMessage } from 'ngx-mqtt';
 import { AngularFireDatabase } from '@angular/fire/database'
 import { AngularFirestore } from '@angular/fire/firestore'
 import { environment } from '../../environments/environment'
@@ -13,9 +13,9 @@ import { environment } from '../../environments/environment'
 })
 export class DatabaseService {
 
-  modalita: 'online' | 'locale' = (environment.production ? 'online' : 'locale')
+  modalita: 'online' | 'locale' = 'locale'//(environment.production ? 'online' : 'locale')
 
-  constructor(private http: HttpClient/*, private mqttService: MqttService*/, private fDatabase: AngularFireDatabase, private firestore: AngularFirestore) {
+  constructor(private http: HttpClient, private mqttService: MqttService, private fDatabase: AngularFireDatabase, private firestore: AngularFirestore) {
     /*mqttService.onConnect.subscribe(data => console.log('onConnect', data))
     mqttService.onClose.subscribe(data => console.log('onClose', data))
     mqttService.onEnd.subscribe(data => console.log('onEnd', data))
@@ -36,13 +36,13 @@ export class DatabaseService {
   }
 
   ottieniRecord(limite?: number, idBarchetta?: string, rimuoviNulli?: boolean): Observable<Record[]> {
-    /*if(this.modalita == 'locale') return this.ottieniRecordDaLocale(limite, idBarchetta, rimuoviNulli)
-    else*/ return this.ottieniRecordDaRemoto(limite, idBarchetta, rimuoviNulli)
+    if(this.modalita == 'locale') return this.ottieniRecordDaLocale(limite, idBarchetta, rimuoviNulli)
+    else return this.ottieniRecordDaRemoto(limite, idBarchetta, rimuoviNulli)
   }
 
   ottieniBarchette(): Observable<Barchetta[]> {
-    /*if(this.modalita == 'locale') return this.ottieniBarchetteDaLocale()
-    else*/ return this.ottieniBarchetteDaRemoto()
+    if(this.modalita == 'locale') return this.ottieniBarchetteDaLocale()
+    else return this.ottieniBarchetteDaRemoto()
   }
 
   ottieniRecordDivisiPerBarchette(limite?: number, rimuoviNulli?: boolean) {
@@ -76,18 +76,18 @@ export class DatabaseService {
   }
 
   ottieniSensori(): Observable<Sensore[]> {
-    /*if(this.modalita == 'locale') return this.ottieniSensoriDaLocale()
-    else*/ return this.ottieniSensoriDaRemoto()
+    if(this.modalita == 'locale') return this.ottieniSensoriDaLocale()
+    else return this.ottieniSensoriDaRemoto()
   }
 
   ottieniSensore(idSensore: string): Observable<Sensore> {
-    /*if(this.modalita == 'locale') return this.ottieniSensoreDaLocale(idSensore)
-    else*/ return this.ottieniSensoreDaRemoto(idSensore)
+    if(this.modalita == 'locale') return this.ottieniSensoreDaLocale(idSensore)
+    else return this.ottieniSensoreDaRemoto(idSensore)
   }
 
   ottieniBarchetta(idBarchetta: string): Observable<Barchetta> {
-    /*if(this.modalita == 'locale') return this.ottieniBarchettaDaLocale(idBarchetta)
-    else*/ return this.ottieniBarchettaDaRemoto(idBarchetta)
+    if(this.modalita == 'locale') return this.ottieniBarchettaDaLocale(idBarchetta)
+    else return this.ottieniBarchettaDaRemoto(idBarchetta)
   }
 
   ottieniSensoriRecord(datiSensori: DatiSensore[]) {
@@ -117,7 +117,7 @@ export class DatabaseService {
   }
 
   //DATABASE LOCALE
-  /*private ottieniRecordDaLocale(limite?: number, idBarchetta?: string, rimuoviNulli?: boolean): Observable<Record[]> {
+  private ottieniRecordDaLocale(limite?: number, idBarchetta?: string, rimuoviNulli?: boolean): Observable<Record[]> {
     let params = {}
 
     if(limite != undefined) params['limite'] = limite
@@ -201,7 +201,7 @@ export class DatabaseService {
 
   private ottieniBarchettaDaLocale(idBarchetta: string): Observable<Barchetta> {
     return this.http.get<Barchetta>('http://localhost/api/barchette/' + idBarchetta)
-  }*/
+  }
 
   //DATABASE REMOTO
   private ottieniRecordDaRemoto(limite?: number, idBarchetta?: string, rimuoviNulli?: boolean) {
