@@ -120,3 +120,9 @@ Il server **SQL** (MariaDB) è organizzato in 4 tabelle principali:
 ### Server HTTP
 
 Questo servizio fornisce delle **API REST** che il sito web, sempre messo a disposizione da questo server, utilizza per mostrare i dati.
+
+## Olimpiadi
+
+### Giorno 1
+[Video primo giorno](https://youtu.be/L8EZxuS9RvE)
+![Foto con amici](Foto/Foto_con_assistenti.jpg)
