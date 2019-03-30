@@ -100,7 +100,7 @@ Per il collettore, ovvero il server a terra che memorizza i dati, abbiamo utiliz
 
 Il collettore, che basandosi su linux è possibile sostituire facilemte, implementa un broker **Mosquitto**, un server **Sql**, un server **HTTP** con un sito web e un processo per sincronizzare i dati web che forniscono i servizi necessari per la comunicazione, il salvataggio e la visualizzazione dei dati.
 
-![Schema collettore]()
+![Schema imfrastruttura](Foto/Schema_infrastruttura.jpg)
 
 ### Broker Mosquitto
 
