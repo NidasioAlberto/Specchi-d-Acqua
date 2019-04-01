@@ -13,6 +13,9 @@ Le barche sono in parte costruite con elementi riciclati per diminuire il loro
 impatto ambientale, nell’ottica del riutilizzo di materiali destinati al monouso.
 
 ![Barchette](Foto/Barchette_1.jpeg)
+![Barchetta al laghetto](Foto/Barchetta_al_laghetto.jpg)
+
+**Video:** [prove dei ribot](https://youtu.be/X26Ot0CG_ao)
 
 ### La squadra
 
@@ -124,5 +127,6 @@ Questo servizio fornisce delle **API REST** che il sito web, sempre messo a disp
 ## Olimpiadi
 
 ### Giorno 1
-[Video primo giorno](https://youtu.be/L8EZxuS9RvE)
+**Video:** [time-lapse giorno 1](https://youtu.be/L8EZxuS9RvE), [time-lapse giorno 2](https://youtu.be/6cRvtolq8c4)
+
 ![Foto con amici](Foto/Foto_con_assistenti.jpg)
