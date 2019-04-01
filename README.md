@@ -117,7 +117,6 @@ Il server **SQL** (MariaDB) è organizzato in 4 tabelle principali:
 - **Record**: dove vengono salvati i dati principali di un record come posizione, data, ora e id della barchetta;
 - **Dati sensori**: permette di memorizzare i valori di ciascun sensore rilevati in un record (questa è una tabella separata perchè le barchette potrebbero non avere tutte la stessa configurazione).
 
-![Schema E/R](Collettore/Database/Schema_E-R.jpg)
 ![Schema logico](Collettore/Database/Schema_logico.png)
 
 ### Server HTTP
