@@ -15,7 +15,7 @@ impatto ambientale, nell’ottica del riutilizzo di materiali destinati al monou
 ![Barchette](Foto/Barchette_1.jpeg)
 ![Barchetta al laghetto](Foto/Barchetta_al_laghetto.jpg)
 
-**Video:** [prove dei ribot](https://youtu.be/X26Ot0CG_ao)
+**Video:** [prove dei robot](https://youtu.be/X26Ot0CG_ao)
 
 ### La squadra
 
