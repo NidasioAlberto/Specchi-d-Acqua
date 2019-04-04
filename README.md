@@ -6,20 +6,20 @@
 
 ### Introduzione
 Il progetto Specchi d’Acqua si pone l’obiettivo di aiutare gli scienziati nello
-studio dei cambiamenti climatici. Proponiamo una rete di barche autonome
+studio dei cambiamenti climatici. Proponiamo una rete di droni autonomi
 che, spostandosi per i mari, monitorano i cambiamenti dovuti al riscaldamento
 globale: dall’aumento delle temperature all'innalzamento del livello dell’acqua.
-Le barche sono in parte costruite con elementi riciclati per diminuire il loro
+I droni sono in parte costruiti con elementi riciclati per diminuire il loro
 impatto ambientale, nell’ottica del riutilizzo di materiali destinati al monouso.
 
-![Barchette](Foto/Barchette_1.jpeg)
-![Barchetta al laghetto](Foto/Barchetta_al_laghetto.jpg)
+![Robot](Foto/Robot_1.jpeg)
+![Robot al laghetto](Foto/Robot_al_laghetto.jpg)
 
-**Video:** [prove dei ribot](https://youtu.be/X26Ot0CG_ao)
+**Video:** [prove dei robot](https://youtu.be/X26Ot0CG_ao)
 
 ### La squadra
 
-**Video**: [Presentazione team](https://youtu.be/9cNglWY3D-Q)
+**Video**: [presentazione team](https://youtu.be/9cNglWY3D-Q)
 
 Alberto Nidasio e Matteo Cristini
 
@@ -41,7 +41,7 @@ Noi abbiamo la soluzione! Il nostro progetto consiste in una flotta di droni acq
 Inoltre sia il codice che i design del robot saranno open-source permettendo così a chiunque di migliorare il progetto apportando nuove modifiche.
 Il robot utilizza anche parti stampate in 3D. Questi componenti sono realizzati su misura, permettendo a ogni modello di essere equipaggiato con diversi sensori e batterie, per adattarsi alle esigenze del momento.
 
-## Descrizione tecnica: barchetta
+## Descrizione tecnica
 
 ### Lo scafo
 
@@ -53,18 +53,13 @@ Il drone è composto da uno scafo realizzato con bottigliette di plastica tenut
 
 I modelli del drone sono disponibili [qui](Modelli).
 
-**Video:** [Esplosione modello barchetta](specchidacqua.xyz)
+**Video:** [Esplosione modello](specchidacqua.xyz)
 
 ![Foto modello](Foto/Render_arancione.png)
 
 ### Processore, sensori, alimentazione e schemi tecnici
 
-La raccolta dei dati è gestita dal microcontrollore ESP8266 che è stato scelto per la sua disponibilità a un prezzo modesto e per le numerose funzionalità offerte.
-Infatti, non solo dispone di numerose porte
-I/O, ma anche di un trasmettitore wifi che
-metterà in comunicazione i droni tra di loro.
-Per quanto riguarda la scelta dei sensori, il progetto prevede piena libertà nella loro selezione in base alle esigenze del caso. Per questo prototipo abbiamo impiegato sensori di temperatura (sia in aria che in acqua, con una sonda da immergere), umidità e un modulo gps.
-Verrà quindi registrata la posizione del robot non solo per permettergli di distribuirsi nell’area designata, ma anche per associarla ai dati dei sensori.
+La raccolta dei dati è gestita dal microcontrollore ESP8266 che è stato scelto per la sua disponibilità a un prezzo modesto e per le numerose funzionalità offerte. Infatti, non solo dispone di numerose porte I/O, ma anche di un trasmettitore wifi che metterà in comunicazione i droni tra di loro. Per quanto riguarda la scelta dei sensori, il progetto prevede piena libertà nella loro selezione in base alle esigenze del caso. Per questo prototipo abbiamo impiegato sensori di temperatura (sia in aria che in acqua, con una sonda da immergere), umidità e un modulo gps. Verrà quindi registrata la posizione del robot non solo per permettergli di distribuirsi nell’area designata, ma anche per associarla ai dati dei sensori.
 Per l’elettronica di bordo sono stati previsti diversi metodi di alimentazione:
 - tramite pile stilo da sostituire regolarmente (metodo attuale);
 - tramite batteria ricaricabile al litio: è previsto siano necessarie due celle
@@ -78,8 +73,8 @@ L'Esp8266 ci permette di utilizzare i sensori **DHT11** (temperatura e umidità 
 
 #### Alimentazione
 
-Per alimentare la scheda e i motori abbiamo utilizzato due set di batterie separati. Il primo, composto da 4 batteria AA fornisce elettricità al motore DC che muove l'elica, e il secondo, formato da 6 batterie AAA che alimenta l'elettronica e il motore passo passo che inclina l'elica.
-Questo evita che, nel caso di cali di tensione all'elettronica dovuti all'avvio del motore o se si scaricano le batterie del motore DC, la barchetta perda il segnale del Collettore e non risponda più ai programmi.
+Per alimentare la scheda e i motori abbiamo utilizzato due set di batterie separati. Il primo, composto da 4 batteria AA fornisce elettricità al motore DC che muove l'elica, e il secondo, formato da 6 batterie AAA, che alimenta l'elettronica e il motore passo passo che inclina l'elica.
+Questo evita che, nel caso di cali di tensione all'elettronica dovuti all'avvio del motore o se si scaricano le batterie del motore DC, il drone perda il segnale e non risponda più ai programmi.
 
 ![Foto alloggiamento batterie](Foto/Alloggiamento_componenti.jpg)
 
@@ -89,11 +84,11 @@ Questo evita che, nel caso di cali di tensione all'elettronica dovuti all'avvio 
 
 ## Descrizione tecnica: collettore
 
-Le barchette, distribuite su una vasta zona, avranno bisogno di un sistema di comunicazione affidabile a lunga distanza. In base alle dimensioni dell’area su cui devono essere distribuiti abbiamo valutato diverse soluzioni:
+I droni, distribuite su una vasta zona, avranno bisogno di un sistema di comunicazione affidabile a lunga distanza. In base alle dimensioni dell’area su cui devono essere distribuiti abbiamo valutato diverse soluzioni:
 - Per comunicazioni nell’ordine delle decine di chilometri sono disponibili moduli **LoRa** (Long Range), anche ad un prezzo ridotto, che permettono un collegamento a maglia, estendendo così considerevolmente la rete, a patto che ci sia un numero sufficiente di nodi.
 - Nel caso invece si voglia lavorare su zone più ampie, esigendo anche un livello di affidabilità superiore, si potrà sfruttare, nei prossimi anni, la rete satellitare **​Starlink**,​ una costellazione di 12.000 satelliti che SpaceX sta sviluppando per portare l’accesso ad internet in qualunque area del pianeta. Questo offrirebbe una connessione indipendente per ciascun drone eliminando la possibilità che alcuni possano rimanere isolati.
 
-Per il prototipo abbiamo utilizzato una rete **Wifi** che collega barchette e collettore con la possibilità di essere estesa con dei ripetitori. Lo stesso sistema che abbiamo sviluppato, che utilizza il protocollo **MQTT** (per l'invio dei dati)  e **TCP** (per il controllo da remoto), potrà essere implementata anche con la rete cellurare.
+Per il prototipo abbiamo utilizzato una rete **Wifi** che collega droni e collettore con la possibilità di essere estesa con dei ripetitori. Lo stesso sistema che abbiamo sviluppato, che utilizza il protocollo **MQTT** (per l'invio dei dati)  e **TCP** (per il controllo da remoto), potrà essere implementata anche con la rete cellurare.
 
 Per il collettore, ovvero il server a terra che memorizza i dati, abbiamo utilizzato un **Raspberry pi**.
 
@@ -107,15 +102,15 @@ Il collettore, che basandosi su linux è possibile sostituire facilemte, impleme
 
 ### Broker Mosquitto
 
-Per la comunicazione tra droni e collettore abbiamo utilizzato il protocollo ***MQTT*** che ci permette un'affidabilità della comunizatione superiore (QOS 2) e riduzione della dimensione dei messaggi. Questo è fornito dal popolare broker **Mosquitto** a cui si collegheranno le barchette come publisher e il server 
+Per la comunicazione tra droni e collettore abbiamo utilizzato il protocollo ***MQTT*** che ci permette un'affidabilità della comunizatione superiore (QOS 2) e riduzione della dimensione dei messaggi. Questo è fornito dal popolare broker **Mosquitto** a cui si collegheranno i droni come publisher e il server.
 
 ### Server SQL
 
 Il server **SQL** (MariaDB) è organizzato in 4 tabelle principali:
-- **Barchette**: contiene la lista di tutte le barchette prodotte;
+- **Droni**: contiene la lista di tutte i droni prodotti;
 - **Sensori**: la lista di tutti i sensori utlizzati (esclusi GPS e bussola);
-- **Record**: dove vengono salvati i dati principali di un record come posizione, data, ora e id della barchetta;
-- **Dati sensori**: permette di memorizzare i valori di ciascun sensore rilevati in un record (questa è una tabella separata perchè le barchette potrebbero non avere tutte la stessa configurazione).
+- **Record**: dove vengono salvati i dati principali di un record come posizione, data, ora e id del drone;
+- **Dati sensori**: permette di memorizzare i valori di ciascun sensore rilevati in un record (questa è una tabella separata perchè i droni potrebbero non avere tutti la stessa configurazione).
 
 ![Schema logico](Collettore/Database/Schema_logico.png)
 
