@@ -41,7 +41,7 @@ Noi abbiamo la soluzione! Il nostro progetto consiste in una flotta di droni acq
 Inoltre sia il codice che i design del robot saranno open-source permettendo così a chiunque di migliorare il progetto apportando nuove modifiche.
 Il robot utilizza anche parti stampate in 3D. Questi componenti sono realizzati su misura, permettendo a ogni modello di essere equipaggiato con diversi sensori e batterie, per adattarsi alle esigenze del momento.
 
-## Descrizione tecnica
+## Descrizione tecnica: drone
 
 ### Lo scafo
 
@@ -88,7 +88,7 @@ I droni, distribuite su una vasta zona, avranno bisogno di un sistema di comunic
 - Per comunicazioni nell’ordine delle decine di chilometri sono disponibili moduli **LoRa** (Long Range), anche ad un prezzo ridotto, che permettono un collegamento a maglia, estendendo così considerevolmente la rete, a patto che ci sia un numero sufficiente di nodi.
 - Nel caso invece si voglia lavorare su zone più ampie, esigendo anche un livello di affidabilità superiore, si potrà sfruttare, nei prossimi anni, la rete satellitare **​Starlink**,​ una costellazione di 12.000 satelliti che SpaceX sta sviluppando per portare l’accesso ad internet in qualunque area del pianeta. Questo offrirebbe una connessione indipendente per ciascun drone eliminando la possibilità che alcuni possano rimanere isolati.
 
-Per il prototipo abbiamo utilizzato una rete **Wifi** che collega droni e collettore con la possibilità di essere estesa con dei ripetitori. Lo stesso sistema che abbiamo sviluppato, che utilizza il protocollo **MQTT** (per l'invio dei dati)  e **TCP** (per il controllo da remoto), potrà essere implementata anche con la rete cellurare.
+Per il prototipo abbiamo utilizzato una rete **Wifi** che collega droni e collettore con la possibilità di essere estesa con dei ripetitori. Lo stesso sistema che abbiamo sviluppato, che utilizza il protocollo **MQTT** (per l'invio dei dati)  e **TCP** (per il controllo da remoto), potrà essere implementat con la rete cellurare.
 
 Per il collettore, ovvero il server a terra che memorizza i dati, abbiamo utilizzato un **Raspberry pi**.
 
@@ -96,7 +96,7 @@ Per il collettore, ovvero il server a terra che memorizza i dati, abbiamo utiliz
 
 ## Software
 
-Il collettore, che basandosi su linux è possibile sostituire facilemte, implementa un broker **Mosquitto**, un server **Sql**, un server **HTTP** con un sito web e un processo per sincronizzare i dati web che forniscono i servizi necessari per la comunicazione, il salvataggio e la visualizzazione dei dati.
+Il collettore (S.O. Linux) implementa un broker **Mosquitto**, un server **Sql**, un server **HTTP** con un sito web e un processo per sincronizzare i dati web che forniscono i servizi necessari per la comunicazione, il salvataggio e la visualizzazione dei dati.
 
 ![Schema imfrastruttura](Foto/Schema_infrastruttura.jpg)
 
