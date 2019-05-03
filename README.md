@@ -53,7 +53,7 @@ Il drone è composto da uno scafo realizzato con bottigliette di plastica tenut
 
 I modelli del drone sono disponibili [qui](Modelli).
 
-**Video:** [Esplosione modello](specchidacqua.xyz)
+**Video:** [Esplosione modello](https://youtu.be/hAqc2swxTDc)
 
 ![Foto modello](Foto/Render_arancione.png)
 
