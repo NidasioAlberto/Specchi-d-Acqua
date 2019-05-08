@@ -1,39 +1,14 @@
+/*
+La versione corrente del programma prevede l'invio dei dati (sensori, gps e tensione batteria)
+a una certa frequenza stabilita.
+Inoltre accetta una connessione tcp sulla porta 1234 per il controllo remoto tramite app.
+*/
+
+//SEZIONE LIBRERIE
+
+//Wifi
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-
-#define WIFI_SSID "Team specchi"
-#define WIFI_PSW "Fornaroli"
-
-#define TCP_SERVER_PORT 1234
-
-WiFiServer server(TCP_SERVER_PORT);
-WiFiClient client, espClient;
-
-boolean velocitaC, angoloC, direzioneC;
-String velocita, angolo, direzione;
-
-#define STEPPER_1 D0
-#define STEPPER_2 D3
-#define STEPPER_3 D4
-#define STEPPER_4 D5
-
-#define DC_ENABLE D6
-
-#define STEP_TOTALI 4096
-int posizioneCorrenteInStep; //si parte da 0 gradi
-int posizioneDaRaggiungere;
-long ultimoAggiornamentoStepper;
-boolean stepperFermo = true;
-
-long tempo;
-
-#define LED_PIN 13
-
-int stato = 0; //0: setup in corso, 1: tutto ok (i dati vengono trasmessi), 2: batteria scarica, altro: errore
-#define FREQUENZA_STATO0 500
-#define FREQUENZA_STATO2 100
-long ultimoAggiornamentoLed;
-int ultimoStatoLed;
 
 //Probe
 #include <OneWire.h>
@@ -48,37 +23,71 @@ int ultimoStatoLed;
 
 //JSON
 #include <ArduinoJson.h>
-const size_t capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(8) + 260;
+const size_t capacity = JSON_ARRAY_SIZE(3) + 3*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(9) + 180;
+
+//SEZIONE VARIABILI
+
+//Wifi e connessioni
+#define WIFI_SSID "Team_specchi"
+#define WIFI_PSW "Fornaroli"
+#define TCP_SERVER_PORT 1234
+
+WiFiServer server(TCP_SERVER_PORT);
+WiFiClient client, espClient;
+PubSubClient mqtt(espClient);
+boolean velocitaC, angoloC, direzioneC; //dati del telecomando
+String velocita, angolo, direzione;
 
 //Impostazioni MQTT
-#define MQTT_USR "barca3"
-#define MQTT_PSW "barca3"
-#define MQTT_ADDR "192.168.4.100"
+#define MQTT_USR "barca1"
+#define MQTT_PSW "barca1"
+#define MQTT_ADDR "192.168.0.1"
 #define MQTT_PORT 1883
 #define MQTT_DATA_TOPIC "records"
 
+//Pin componenti
+#define STEPPER_1 D0
+#define STEPPER_2 D3
+#define STEPPER_3 D4
+#define STEPPER_4 D5
+#define DC_ENABLE D6
+#define LED_PIN 13      //GPIO8   - SD1
+#define PROBE_PIN 1     //GPIO1   - TX
+#define DHT_PIN 3       //GPIO3   - RX
+#define GPS_PIN 15      //GPIO15  - D8
+#define ADC_PIN A0       //ADC0    - A0
+
+//Motori
+#define STEP_TOTALI 4096
+int posizioneCorrenteInStep; //si parte da 0 gradi
+int posizioneDaRaggiungere;
+long ultimoAggiornamentoStepper;
+boolean stepperFermo = true;
+
+//Led di stato
+int stato = 0; //0: setup in corso, 1: tutto ok (i dati vengono trasmessi), 2: batteria scarica, altro: errore
+#define FREQUENZA_STATO0 500
+#define FREQUENZA_STATO2 100
+long ultimoAggiornamentoLed;
+int ultimoStatoLed;
+
 //Impostazioni invio dati
-#define ID_BARCHETTA "3"
+#define ID_BARCHETTA "1"
 #define ID_PROBE "1"
 #define ID_DHT11_TEMP "2"
 #define ID_DHT11_HUM "3"
 
-//Pin componenti
-#define PROBE_PIN 1 //GPIO1 - TX
-#define DHT_PIN 3 //GPIO3 - RX
-#define GPS_PIN 15 //GPIO15 - D8
-
-PubSubClient mqtt(espClient);
+//Istanze componenti e dati
 OneWire oneWire(PROBE_PIN);
 DallasTemperature probe(&oneWire);
 DHT dht(DHT_PIN, DHT11);
 TinyGPSPlus gpsParser;
 SoftwareSerial gps(GPS_PIN, GPS_PIN);
+float tempAria, umidAria, tempAcqua, tensione;
 
-float tempAria, umidAria, tempAcqua;
-
+//gestione frequenza invio dati
 long ultimaVolta;
-float frequenzaDati = 0.5;
+float frequenzaDati = 0.5; //in Hz
 
 void setup() {
   stato = 0;
@@ -179,7 +188,7 @@ void loop() {
 
   aggiornaStepper();
 
-  delay(1);
+  mqtt.loop();
 }
 
 void controllaConnessione() {
@@ -199,6 +208,7 @@ void controllaConnessione() {
 void connettiWifi() {
   //provo a connettermi
   WiFi.mode(WIFI_STA);
+  WiFi.hostname(MQTT_USR);
   WiFi.begin(WIFI_SSID, WIFI_PSW);
 
   //aspetto finchè non siamo connessi al wifi
@@ -210,7 +220,6 @@ void connettiWifi() {
   //avvio il server tcp
   server.begin();
 }
-
 
 void setupStepper() {
   //imposto i pin dei motori
@@ -331,7 +340,6 @@ void stopStepper() {
   digitalWrite(STEPPER_4, LOW);
 }
 
-
 void aggiornaLed() {
   switch(stato) {
     case 0:
@@ -418,6 +426,7 @@ void leggiSensori() {
   tempAcqua = probe.getTempCByIndex(0);
   tempAria = dht.readTemperature();
   umidAria = dht.readHumidity();
+  tensione = (float) 0.0058783*analogRead(ADC_PIN);
 }
 
 void aggiornaGps() {
@@ -433,6 +442,7 @@ void inviaDati() {
   
   //JsonObject record = doc.createNestedObject("record");
   record["idBarchetta"] = ID_BARCHETTA;
+  record["tensione"].set((float) tensione);
   record["latitudine"] = gpsParser.location.lat(); //String(gpsParser.location.lat(), 6); 
   record["longitudine"] = gpsParser.location.lng(); //String(gpsParser.location.lng(), 6);
   record["satelliti"] = gpsParser.satellites.value();

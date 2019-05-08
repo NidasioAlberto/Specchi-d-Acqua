@@ -1,4 +1,4 @@
-#define ADC_PIN 
+#define ADC_PIN 2
 
 void setup() {
   Serial.begin(9600);

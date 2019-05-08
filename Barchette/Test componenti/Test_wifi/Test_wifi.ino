@@ -1,6 +1,6 @@
 #include <ESP8266WiFi.h>
 
-#define WIFI_SSID "Team specchi"
+#define WIFI_SSID "Team_specchi"
 #define WIFI_PSW "Fornaroli"
 
 void setup() {

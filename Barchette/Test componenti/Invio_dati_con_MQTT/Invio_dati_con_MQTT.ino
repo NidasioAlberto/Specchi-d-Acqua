@@ -18,13 +18,13 @@
 const size_t capacity = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(8) + 260;
 
 //Impostazioni WIFI
-#define WIFI_SSID "Team specchi"
+#define WIFI_SSID "Team_specchi"
 #define WIFI_PSW "Fornaroli"
 
 //Impostazioni MQTT
 #define MQTT_USR "barca1"
 #define MQTT_PSW "barca1"
-#define MQTT_ADDR "192.168.4.100"
+#define MQTT_ADDR "192.168.0.1"
 #define MQTT_PORT 1883
 #define MQTT_DATA_TOPIC "records"
 
