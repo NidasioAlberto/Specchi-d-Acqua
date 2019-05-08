@@ -1,6 +1,6 @@
 #include <ESP8266WiFi.h>
 
-#define WIFI_SSID "Team specchi"
+#define WIFI_SSID "Team_specchi"
 #define WIFI_PSW "Fornaroli"
 
 #define TCP_SERVER_PORT 1234
@@ -22,7 +22,6 @@ void setup() {
 void loop() {
   //controllo la connessione
   controllaConnessione();
-
 
   //controlllo se c'è qualcuno che vuole controllare la barchetta
   if(client) {
@@ -53,8 +52,8 @@ void loop() {
               direzioneC = true;
             }
           } else if(c == ';') {
-            Serial.print("Velovità: "); Serial.print(velocita);
-            Serial.print(" angolo: "); Serial.print(angolo);
+            Serial.print("Velocità: "); Serial.print(velocita.toInt());
+            Serial.print(" angolo: "); Serial.print(angolo.toInt());
             Serial.print(" direzione: "); Serial.println(direzione);
             break;
           } else {

@@ -39,8 +39,8 @@ boolean velocitaC, angoloC, direzioneC; //dati del telecomando
 String velocita, angolo, direzione;
 
 //Impostazioni MQTT
-#define MQTT_USR "barca1"
-#define MQTT_PSW "barca1"
+#define MQTT_USR "barca4"
+#define MQTT_PSW "barca4"
 #define MQTT_ADDR "192.168.0.1"
 #define MQTT_PORT 1883
 #define MQTT_DATA_TOPIC "records"
@@ -72,7 +72,7 @@ long ultimoAggiornamentoLed;
 int ultimoStatoLed;
 
 //Impostazioni invio dati
-#define ID_BARCHETTA "1"
+#define ID_BARCHETTA "4"
 #define ID_PROBE "1"
 #define ID_DHT11_TEMP "2"
 #define ID_DHT11_HUM "3"
@@ -126,6 +126,7 @@ void loop() {
     
     digitalWrite(LED_PIN, LOW);
     inviaDati();
+    delay(50);
     digitalWrite(LED_PIN, HIGH);
     
     ultimaVolta = millis();
@@ -188,6 +189,7 @@ void loop() {
 
   aggiornaStepper();
 
+  delay(1);
   mqtt.loop();
 }
 
