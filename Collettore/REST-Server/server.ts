@@ -6,8 +6,8 @@ import { Sensore, Barchetta } from './utils/tipi';
 
 //preparo il database
 const database = new Database({
-    host     : '192.168.4.100',
-    user     : 'Collettore',
+    host     : '192.168.0.1',
+    user     : 'collettore',
     password : 'Fornaroli',
     database : 'DatabaseBarchette',
     dateStrings: true

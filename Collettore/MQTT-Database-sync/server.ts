@@ -2,7 +2,7 @@ import mqtt = require('mqtt')
 import { Database } from './utils/database'
 import { RealtimeDatabase } from './utils/realtime_database'
 
-const INDIRIZZO_SERVER = '192.168.4.100'
+const INDIRIZZO_SERVER = '192.168.0.1'
 
 import { initializeApp, credential} from 'firebase-admin'
 
@@ -16,12 +16,15 @@ initializeApp({
 
 const database = new Database({
     host     : INDIRIZZO_SERVER,
-    user     : 'Collettore',
+    user     : 'collettore',
     password : 'Fornaroli',
     database : 'DatabaseBarchette'
 })
 
-const client = mqtt.connect('mqtt://' + INDIRIZZO_SERVER)
+const client = mqtt.connect('mqtt://' + INDIRIZZO_SERVER, {
+    username: 'barca1',
+    password: 'barca1'
+})
 
 client.on('connect', function () {
     console.log('Collegamento a mosquitto effettuato')

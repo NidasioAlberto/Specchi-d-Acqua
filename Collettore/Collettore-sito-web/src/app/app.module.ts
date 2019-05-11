@@ -41,9 +41,11 @@ import { AgmCoreModule } from '@agm/core';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-  hostname: '192.168.4.100',
+  hostname: '192.168.0.1',
   port: 9001,
-  path: '/mqtt'
+  path: '/mqtt',
+  username: 'barca1',
+  password: 'barca1'
 }
 
 @NgModule({
