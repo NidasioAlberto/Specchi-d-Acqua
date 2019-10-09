@@ -15,10 +15,27 @@ export class JoystickComponent implements OnInit {
   canvas: ElementRef<HTMLCanvasElement>
   ctx: CanvasRenderingContext2D
 
+  mouseDown: boolean = false
+
+  maxRaggio: number = 200
+  velocita: number = 0
+
   constructor() { }
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d')
+
+    this.canvas.nativeElement.onmousedown = (event) => {
+      this.mouseDown = true
+      this.disegnaJoystick(event.clientX, event.clientY)
+    }
+    this.canvas.nativeElement.onmousemove = (event) => {
+      if (this.mouseDown) this.disegnaJoystick(event.clientX, event.clientY)
+    }
+    this.canvas.nativeElement.onmouseup = (event) => {
+      this.mouseDown = false
+      this.disegnaJoystick(this.width/2, this.height/2)
+    }
   }
  
   onResized(event: ResizedEvent) {
@@ -28,9 +45,38 @@ export class JoystickComponent implements OnInit {
     this.ctx.canvas.width = this.width
     this.ctx.canvas.height = this.height
 
+    this.maxRaggio = (this.width < this.height ? this.width : this.height) * (3/9);
+
+    this.disegnaJoystick(this.width/2, this.height/2)
+  }
+
+  disegnaJoystick(xUtente: number, yUtente: number) {
+    // Pulisco la canvas
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     this.ctx.fillStyle = 'white'
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-    this.ctx.fillStyle = 'red'
-    this.ctx.fillRect(200, 200, this.ctx.canvas.width/2, 700)
+
+    // Calcolo la posizione dove il joystick deve essere disegnato
+    let xUtenteRelativo = xUtente - this.width/2
+    let yUtenteRelativo = yUtente - this.height/2
+
+    let raggio = Math.sqrt(Math.pow((Math.abs(xUtente - this.width/2)), 2) + Math.pow((Math.abs(yUtente - this.height/2)), 2))
+    let teta = Math.atan2(xUtenteRelativo, yUtenteRelativo)
+
+    this.velocita = raggio/this.maxRaggio
+
+    console.log('teta', teta, Math.sin(teta) * 100, Math.cos(teta) * 100)
+
+    if(raggio > this.maxRaggio) raggio = this.maxRaggio
+
+    let xJoystick = this.width/2 + Math.sin(teta) * raggio
+    let yJoystick = this.height/2 + Math.cos(teta) * raggio
+
+    //Disegno il cerchio del joystick alle coordinare specificate
+    this.ctx.fillStyle = '#42a5f5'
+    this.ctx.beginPath()
+    this.ctx.arc(xJoystick, yJoystick, 50, 0, 360)
+    this.ctx.fill()
+    this.ctx.closePath()
   }
 }
