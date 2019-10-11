@@ -9,6 +9,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JoystickComponent } from './joystick/joystick.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
 
+import {
+  MatButtonModule
+} from '@angular/material'
+
+import { 
+  WebBluetoothModule
+} from '@manekinekko/angular-web-bluetooth';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +27,14 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
-    AngularResizedEventModule
+    AngularResizedEventModule,
+
+    WebBluetoothModule.forRoot({
+      enableTracing: true // or false, this will enable logs in the browser's console
+    }),
+
+    // Material components
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
