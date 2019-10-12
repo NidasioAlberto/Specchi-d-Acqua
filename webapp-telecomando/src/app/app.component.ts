@@ -17,5 +17,10 @@ export class AppComponent implements OnInit {
 
   cerca() {
     console.log('Cerco dispositivi bluetooth...')
+
+    this.ble.value$({
+      service: 'battery_service',
+      characteristic: 'battery_level'
+    }).subscribe(console.log)
   }
 }
