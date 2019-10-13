@@ -1,5 +1,26 @@
-<!--
-    <app-joystick></app-joystick>
--->
-
-<button mat-raised-button color="primary" (click)="cerca()">Cerca</button>
+<app-joystick class="joystick" (updateControls)="updateControls($event)"></app-joystick>
+<div class="ui">
+    <button mat-raised-button color="primary" (click)="connect()">Connetti</button>
+    <button mat-raised-button color="warn" (click)="disconnect()">Disconnetti</button>
+    
+    <br>
+    Stato connessione: {{ serverConnected }}
+    <br>
+    Temperatura aria: {{ airTemperature | async }}
+    <br>
+    Umidità aria: {{ airHumidity | async }}
+    <br>
+    Temperatura acqua: {{ waterTemperature | async }}
+    <br>
+    Latitudine: {{ gpsLatitude | async }}
+    <br>
+    Longitudine: {{ gpsLongitude | async }}
+    <br>
+    Satelliti: {{ gpsSatellites | async }}
+    <br>
+    Altitudine: {{ gpsAltitude | async }}
+    <br>
+    Velocità: {{ gpsSpeed | async }}
+    <br>
+    HDOP: {{ gpsHdop | async }}
+</div>

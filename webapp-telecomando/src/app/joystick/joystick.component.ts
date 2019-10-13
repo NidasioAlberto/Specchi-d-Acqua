@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { ResizedEvent } from 'angular-resize-event';
+import { fromEvent, interval } from 'rxjs';
+import { debounceTime, debounce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-joystick',
@@ -10,6 +12,8 @@ export class JoystickComponent implements OnInit {
 
   @Input() width: number
   @Input() height: number
+
+  @Output() updateControls = new EventEmitter<{direction: number, speed: number}>()
 
   @ViewChild('joystick', { static: true }) 
   canvas: ElementRef<HTMLCanvasElement>
@@ -24,15 +28,31 @@ export class JoystickComponent implements OnInit {
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d')
-
+    
     this.canvas.nativeElement.onmousedown = (event) => {
       this.mouseDown = true
       this.disegnaJoystick(event.clientX, event.clientY)
     }
+
+    this.canvas.nativeElement.ontouchstart = (event) => {
+      this.mouseDown = true
+      this.disegnaJoystick(event.touches[0].clientX, event.touches[0].clientY)
+    }
+
     this.canvas.nativeElement.onmousemove = (event) => {
       if (this.mouseDown) this.disegnaJoystick(event.clientX, event.clientY)
     }
+
+    this.canvas.nativeElement.ontouchmove = (event) => {
+      if (this.mouseDown) this.disegnaJoystick(event.touches[0].clientX, event.touches[0].clientY)
+    }
+
     this.canvas.nativeElement.onmouseup = (event) => {
+      this.mouseDown = false
+      this.disegnaJoystick(this.width/2, this.height/2)
+    }
+
+    this.canvas.nativeElement.ontouchend = (event) => {
       this.mouseDown = false
       this.disegnaJoystick(this.width/2, this.height/2)
     }
@@ -47,10 +67,10 @@ export class JoystickComponent implements OnInit {
 
     this.maxRaggio = (this.width < this.height ? this.width : this.height) * (3/9);
 
-    this.disegnaJoystick(this.width/2, this.height/2)
+    this.disegnaJoystick(this.width/2, this.height/2, false)
   }
 
-  disegnaJoystick(xUtente: number, yUtente: number) {
+  disegnaJoystick(xUtente: number, yUtente: number, needUpdate: boolean = true) {
     // Pulisco la canvas
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     this.ctx.fillStyle = 'white'
@@ -65,7 +85,10 @@ export class JoystickComponent implements OnInit {
 
     this.velocita = raggio/this.maxRaggio
 
-    console.log('teta', teta, Math.sin(teta) * 100, Math.cos(teta) * 100)
+    let speed = (raggio / this.maxRaggio) * 100
+    if (speed > 100) speed = 100
+
+    if(needUpdate) this.updateControls.emit({direction: teta, speed})
 
     if(raggio > this.maxRaggio) raggio = this.maxRaggio
 

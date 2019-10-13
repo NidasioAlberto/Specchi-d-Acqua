@@ -30,7 +30,7 @@ import {
     AngularResizedEventModule,
 
     WebBluetoothModule.forRoot({
-      enableTracing: true // or false, this will enable logs in the browser's console
+      enableTracing: false // or false, this will enable logs in the browser's console
     }),
 
     // Material components
