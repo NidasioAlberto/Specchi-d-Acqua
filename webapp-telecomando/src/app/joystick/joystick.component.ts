@@ -1,22 +1,20 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { ResizedEvent } from 'angular-resize-event';
-import { fromEvent, interval } from 'rxjs';
-import { debounceTime, debounce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-joystick',
   templateUrl: './joystick.component.html',
   styleUrls: ['./joystick.component.scss']
 })
-export class JoystickComponent implements OnInit {
+export class JoystickComponent implements OnInit, AfterViewInit {
 
   @Input() width: number
   @Input() height: number
 
   @Output() updateControls = new EventEmitter<{direction: number, speed: number}>()
 
-  @ViewChild('joystick', { static: true }) 
-  canvas: ElementRef<HTMLCanvasElement>
+  @ViewChild('joystickcontainer', { static: true }) joystickContsiner: ElementRef<HTMLDivElement>
+  @ViewChild('joystick', { static: true }) canvas: ElementRef<HTMLCanvasElement>
   ctx: CanvasRenderingContext2D
 
   mouseDown: boolean = false
@@ -57,8 +55,15 @@ export class JoystickComponent implements OnInit {
       this.disegnaJoystick(this.width/2, this.height/2)
     }
   }
+
+  ngAfterViewInit() {
+    console.log('Initial dimension', this.joystickContsiner.nativeElement.offsetWidth, this.joystickContsiner.nativeElement.offsetHeight)
+    this.ctx.canvas.width = this.joystickContsiner.nativeElement.offsetWidth
+    this.ctx.canvas.height = this.joystickContsiner.nativeElement.offsetHeight
+  }
  
   onResized(event: ResizedEvent) {
+    console.log('onResized', event.newWidth, event.newHeight)
     this.width = event.newWidth
     this.height = event.newHeight
 
@@ -71,6 +76,7 @@ export class JoystickComponent implements OnInit {
   }
 
   disegnaJoystick(xUtente: number, yUtente: number, needUpdate: boolean = true) {
+    console.log('disegnaJoystick', xUtente, yUtente)
     // Pulisco la canvas
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     this.ctx.fillStyle = 'white'

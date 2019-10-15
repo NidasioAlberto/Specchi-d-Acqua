@@ -1,21 +1,24 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core'
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { JoystickComponent } from './joystick/joystick.component';
-import { AngularResizedEventModule } from 'angular-resize-event';
+import { AppRoutingModule } from './app-routing.module'
+import { AppComponent } from './app.component'
+import { ServiceWorkerModule } from '@angular/service-worker'
+import { environment } from '../environments/environment'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { JoystickComponent } from './joystick/joystick.component'
+import { AngularResizedEventModule } from 'angular-resize-event'
 
 import {
-  MatButtonModule
+  MatButtonModule,
+  MatTabsModule,
+  MatIconModule,
+  MatTooltipModule,
 } from '@angular/material'
 
 import { 
   WebBluetoothModule
-} from '@manekinekko/angular-web-bluetooth';
+} from '@manekinekko/angular-web-bluetooth'
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import {
     }),
 
     // Material components
-    MatButtonModule
+    MatButtonModule,
+    MatTabsModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

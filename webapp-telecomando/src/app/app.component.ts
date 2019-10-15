@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core'
-import { BluetoothCore, BrowserWebBluetooth } from '@manekinekko/angular-web-bluetooth'
-import { map, mergeMap } from 'rxjs/operators'
+import { map } from 'rxjs/operators'
 import { SENSORS_SERVICE_UUID, WATER_TEMPERATURE_CHARACTERISTIC_UUID, GPS_LOCATION_SERVICE_UUID, CONTROL_SERVICE_UUID, AIR_TEMPERATURE_CHARACTERISTIC_UUID, AIR_HUMIDITY_CHARACTERISTIC_UUID, GPS_LATITUDE_CHARACTERISTIC_UUID, GPS_LONGITUDE_CHARACTERISTIC_UUID, GPS_SATELLITES_CHARACTERISTIC_UUID, GPS_ALTITUDE_CHARACTERISTIC_UUID, SPEED_CHARACTERISTIC_UUID, GPS_SPEED_CHARACTERISTIC_UUID, GPS_HDOP_CHARACTERISTIC_UUID, DIRECTION_CHARACTERISTIC_UUID} from './utils/uuids'
-import { combineLatest, Observable, fromEvent } from 'rxjs';
-import { LayoutModule } from '@angular/cdk/layout';
+import { Observable, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -123,8 +121,16 @@ export class AppComponent implements OnInit {
     }
   }
 
-disconnect() {
+  disconnect() {
     this.gatt.disconnect()
+  }
+
+  toggleConnection() {
+    if(this.serverConnected) {
+      this.disconnect()
+    } else {
+      this.connect()
+    }
   }
 
   /**

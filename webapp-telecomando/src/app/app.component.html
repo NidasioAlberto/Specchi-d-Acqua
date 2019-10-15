@@ -1,26 +1,36 @@
-<app-joystick class="joystick" (updateControls)="updateControls($event)"></app-joystick>
-<div class="ui">
-    <button mat-raised-button color="primary" (click)="connect()">Connetti</button>
-    <button mat-raised-button color="warn" (click)="disconnect()">Disconnetti</button>
-    
-    <br>
-    Stato connessione: {{ serverConnected }}
-    <br>
-    Temperatura aria: {{ airTemperature | async }}
-    <br>
-    Umidità aria: {{ airHumidity | async }}
-    <br>
-    Temperatura acqua: {{ waterTemperature | async }}
-    <br>
-    Latitudine: {{ gpsLatitude | async }}
-    <br>
-    Longitudine: {{ gpsLongitude | async }}
-    <br>
-    Satelliti: {{ gpsSatellites | async }}
-    <br>
-    Altitudine: {{ gpsAltitude | async }}
-    <br>
-    Velocità: {{ gpsSpeed | async }}
-    <br>
-    HDOP: {{ gpsHdop | async }}
-</div>
+<button mat-fab
+    class="bluetooth-button"
+    color="primary"
+    aria-label="Connetti il dispositivo"
+    matTooltip="Connetti il dispositivo"
+    (click)="toggleConnection()">
+    <mat-icon>{{serverConnected ? "bluetooth_connected" : "bluetooth"}}</mat-icon>
+</button>
+<mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Controlli">
+        <div class="joystick-container">
+            <app-joystick class="joystick" (updateControls)="updateControls($event)"></app-joystick>
+        </div>
+    </mat-tab>
+    <mat-tab label="Dati">
+        Stato connessione: {{ serverConnected }}
+        <br>
+        Temperatura aria: {{ airTemperature | async }}
+        <br>
+        Umidità aria: {{ airHumidity | async }}
+        <br>
+        Temperatura acqua: {{ waterTemperature | async }}
+        <br>
+        Latitudine: {{ gpsLatitude | async }}
+        <br>
+        Longitudine: {{ gpsLongitude | async }}
+        <br>
+        Satelliti: {{ gpsSatellites | async }}
+        <br>
+        Altitudine: {{ gpsAltitude | async }}
+        <br>
+        Velocità: {{ gpsSpeed | async }}
+        <br>
+        HDOP: {{ gpsHdop | async }}
+    </mat-tab>
+  </mat-tab-group>
