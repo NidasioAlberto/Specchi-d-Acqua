@@ -2,6 +2,8 @@
 
 [Manifesto team Specchi d'Acqua](Manifesto_team_Specchi_d'Acqua.pdf)
 
+[Modello su Prusa printers](https://www.prusaprinters.org/prints/7135-drone-acquatico)
+
 ## Presentazione del progetto
 
 ### Introduzione
