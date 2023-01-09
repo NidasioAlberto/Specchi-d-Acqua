@@ -11,7 +11,7 @@
   "dependencies": {
     "@types/mqtt": "^2.5.0",
     "@types/mysql": "^2.15.5",
-    "firebase-admin": "^7.1.0",
+    "firebase-admin": "^11.4.1",
     "mqtt": "^2.18.8",
     "mysql": "^2.16.0",
     "typescript": "^3.3.3333"
